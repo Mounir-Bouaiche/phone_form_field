@@ -4,6 +4,7 @@ export 'src/widgets/phone_form_field.dart';
 export 'src/widgets/country_selector/country_selector_navigator.dart';
 export 'src/widgets/country_selector/country_selector.dart';
 export 'src/widgets/country_code_chip.dart';
+export 'src/widgets/country_selector/search_box.dart' show SearchBoxDecoration;
 
 export 'src/validator/phone_validator.dart';
 

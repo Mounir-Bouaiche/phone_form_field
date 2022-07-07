@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:phone_form_field/src/widgets/country_selector/country_selector_page.dart';
+import 'package:phone_form_field/src/widgets/country_selector/search_box.dart';
 
 abstract class CountrySelectorNavigator {
   final List<IsoCode>? countries;
@@ -11,16 +12,24 @@ abstract class CountrySelectorNavigator {
   final bool sortCountries;
   final String? noResultMessage;
   final bool searchAutofocus;
+  final InputDecoration decoration;
+  final TextStyle? searchFieldStyle;
 
   const CountrySelectorNavigator({
     this.countries,
     this.favorites,
-    this.addSeparator = true,
-    this.showCountryCode = true,
-    this.sortCountries = false,
     this.noResultMessage,
-    required this.searchAutofocus,
-  });
+    this.searchFieldStyle,
+    bool? searchAutofocus,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
+    InputDecoration? decoration,
+  })  : searchAutofocus = searchAutofocus ?? kIsWeb,
+        addSeparator = addSeparator ?? true,
+        showCountryCode = showCountryCode ?? true,
+        sortCountries = sortCountries ?? true,
+        decoration = decoration ?? const SearchBoxDecoration();
 
   Future<Country?> navigate(BuildContext context);
 
@@ -37,48 +46,58 @@ abstract class CountrySelectorNavigator {
       noResultMessage: noResultMessage,
       scrollController: scrollController,
       searchAutofocus: searchAutofocus,
+      decoration: decoration,
+      searchFieldStyle: searchFieldStyle,
     );
   }
 
   const factory CountrySelectorNavigator.dialog({
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator,
-    bool showCountryCode,
-    bool sortCountries,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) = DialogNavigator._;
 
   const factory CountrySelectorNavigator.searchDelegate({
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator,
-    bool showCountryCode,
-    bool sortCountries,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) = SearchDelegateNavigator._;
 
   const factory CountrySelectorNavigator.bottomSheet({
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator,
-    bool showCountryCode,
-    bool sortCountries,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) = BottomSheetNavigator._;
 
   const factory CountrySelectorNavigator.modalBottomSheet({
     double? height,
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator,
-    bool showCountryCode,
-    bool sortCountries,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) = ModalBottomSheetNavigator._;
 
   const factory CountrySelectorNavigator.draggableBottomSheet({
@@ -88,11 +107,13 @@ abstract class CountrySelectorNavigator {
     BorderRadiusGeometry? borderRadius,
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator,
-    bool showCountryCode,
-    bool sortCountries,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) = DraggableModalBottomSheetNavigator._;
 }
 
@@ -100,11 +121,13 @@ class DialogNavigator extends CountrySelectorNavigator {
   const DialogNavigator._({
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator = true,
-    bool showCountryCode = true,
-    bool sortCountries = false,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus = kIsWeb,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) : super(
           countries: countries,
           favorites: favorites,
@@ -113,6 +136,8 @@ class DialogNavigator extends CountrySelectorNavigator {
           sortCountries: sortCountries,
           noResultMessage: noResultMessage,
           searchAutofocus: searchAutofocus,
+          decoration: decoration,
+          searchFieldStyle: searchFieldStyle,
         );
 
   @override
@@ -132,11 +157,13 @@ class SearchDelegateNavigator extends CountrySelectorNavigator {
   const SearchDelegateNavigator._({
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator = true,
-    bool showCountryCode = true,
-    bool sortCountries = false,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus = kIsWeb,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) : super(
           countries: countries,
           favorites: favorites,
@@ -145,6 +172,8 @@ class SearchDelegateNavigator extends CountrySelectorNavigator {
           sortCountries: sortCountries,
           noResultMessage: noResultMessage,
           searchAutofocus: searchAutofocus,
+          decoration: decoration,
+          searchFieldStyle: searchFieldStyle,
         );
 
   @override
@@ -179,19 +208,24 @@ class BottomSheetNavigator extends CountrySelectorNavigator {
   const BottomSheetNavigator._({
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator = true,
-    bool showCountryCode = true,
-    bool sortCountries = false,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus = kIsWeb,
+    bool? searchAutofocus = kIsWeb,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) : super(
-            countries: countries,
-            favorites: favorites,
-            addSeparator: addSeparator,
-            showCountryCode: showCountryCode,
-            sortCountries: sortCountries,
-            noResultMessage: noResultMessage,
-            searchAutofocus: searchAutofocus);
+          countries: countries,
+          favorites: favorites,
+          addSeparator: addSeparator,
+          showCountryCode: showCountryCode,
+          sortCountries: sortCountries,
+          noResultMessage: noResultMessage,
+          searchAutofocus: searchAutofocus,
+          decoration: decoration,
+          searchFieldStyle: searchFieldStyle,
+        );
 
   @override
   Future<Country?> navigate(BuildContext context) {
@@ -216,19 +250,24 @@ class ModalBottomSheetNavigator extends CountrySelectorNavigator {
     this.height,
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator = true,
-    bool showCountryCode = true,
-    bool sortCountries = false,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus = kIsWeb,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) : super(
-            countries: countries,
-            favorites: favorites,
-            addSeparator: addSeparator,
-            showCountryCode: showCountryCode,
-            sortCountries: sortCountries,
-            noResultMessage: noResultMessage,
-            searchAutofocus: searchAutofocus);
+          countries: countries,
+          favorites: favorites,
+          addSeparator: addSeparator,
+          showCountryCode: showCountryCode,
+          sortCountries: sortCountries,
+          noResultMessage: noResultMessage,
+          searchAutofocus: searchAutofocus,
+          decoration: decoration,
+          searchFieldStyle: searchFieldStyle,
+        );
 
   @override
   Future<Country?> navigate(BuildContext context) {
@@ -258,19 +297,24 @@ class DraggableModalBottomSheetNavigator extends CountrySelectorNavigator {
     this.borderRadius,
     List<IsoCode>? countries,
     List<IsoCode>? favorites,
-    bool addSeparator = true,
-    bool showCountryCode = true,
-    bool sortCountries = false,
+    bool? addSeparator,
+    bool? showCountryCode,
+    bool? sortCountries,
     String? noResultMessage,
-    bool searchAutofocus = kIsWeb,
+    bool? searchAutofocus,
+    InputDecoration? decoration,
+    TextStyle? searchFieldStyle,
   }) : super(
-            countries: countries,
-            favorites: favorites,
-            addSeparator: addSeparator,
-            showCountryCode: showCountryCode,
-            sortCountries: sortCountries,
-            noResultMessage: noResultMessage,
-            searchAutofocus: searchAutofocus);
+          countries: countries,
+          favorites: favorites,
+          addSeparator: addSeparator,
+          showCountryCode: showCountryCode,
+          sortCountries: sortCountries,
+          noResultMessage: noResultMessage,
+          searchAutofocus: searchAutofocus,
+          decoration: decoration,
+          searchFieldStyle: searchFieldStyle,
+        );
 
   @override
   Future<Country?> navigate(BuildContext context) {

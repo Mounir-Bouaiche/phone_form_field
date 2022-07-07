@@ -10,7 +10,7 @@ class PhoneController extends ValueNotifier<PhoneNumber?> {
       StreamController.broadcast();
   Stream<void> get selectionRequestStream => _selectionRequestController.stream;
 
-  PhoneController(this.initialValue) : super(initialValue);
+  PhoneController([this.initialValue]) : super(initialValue);
 
   selectNationalNumber() {
     _selectionRequestController.add(null);

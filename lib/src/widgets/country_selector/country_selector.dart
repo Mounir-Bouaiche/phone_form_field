@@ -41,6 +41,12 @@ class CountrySelector extends StatefulWidget {
   /// whether the search input is auto focussed
   final bool searchAutofocus;
 
+  /// Search Field decoration
+  final InputDecoration? decoration;
+
+  /// Search Field text style
+  final TextStyle? searchFieldStyle;
+
   const CountrySelector({
     Key? key,
     required this.onCountrySelected,
@@ -51,6 +57,8 @@ class CountrySelector extends StatefulWidget {
     this.favoriteCountries = const [],
     this.countries,
     this.searchAutofocus = kIsWeb,
+    this.decoration,
+    this.searchFieldStyle,
   }) : super(key: key);
 
   @override
@@ -92,6 +100,8 @@ class _CountrySelectorState extends State<CountrySelector> {
           child: SearchBox(
             autofocus: widget.searchAutofocus,
             onChanged: _onSearch,
+            decoration: widget.decoration,
+            style: widget.searchFieldStyle,
           ),
         ),
         Flexible(
